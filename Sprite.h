@@ -23,9 +23,17 @@
 
 namespace Snow
 {
+	class Printer;
+	class SpriteSegment;
+
 	class Sprite
 	{
 	public:
+		// Принтер работает на низком уровне. Даём ему достум к private переменным
+		friend Snow::Printer;
+		// При склеивании спрайтов Спрайт-сегменту нужен доступ к массиву
+		friend Snow::SpriteSegment;
+
 		Sprite();
 		Sprite(const std::string &filename);
 		~Sprite();

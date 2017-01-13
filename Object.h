@@ -2,6 +2,7 @@
 #define SNOW_OBJECT_H
 
 #include <string>
+#include <mutex>
 
 #include "Position.h"
 #include "Sprite.h"
@@ -24,11 +25,15 @@ namespace Snow
 		long getLayerNumber() const;
 
 		Snow::SpriteSegment getSpriteSegment(const Snow::Position &pointUpLeft, const Snow::Position &pointDownRight) const;
+		void lockFullMutex();
+		void unlockFullMutex();
 		
 	protected:
 		Snow::Position _position;
 		Snow::Sprite _sprite;
 		long _layerNumber;
+		std::mutex _fullMutex;
+
 	};
 }
 

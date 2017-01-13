@@ -70,4 +70,13 @@ Snow::SpriteSegment Snow::Object::getSpriteSegment(const Snow::Position &pointUp
 	return tSpriteSegment;
 }
 
+void Snow::Object::lockFullMutex()
+{
+	_fullMutex.lock();
+}
+
+void Snow::Object::unlockFullMutex()
+{
+	_fullMutex.unlock();
+}
 
