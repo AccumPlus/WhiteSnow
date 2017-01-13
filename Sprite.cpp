@@ -12,6 +12,10 @@ Snow::Sprite::Sprite(const std::string &filename)
 	this->setFilename(filename);
 }
 
+Snow::Sprite::~Sprite()
+{
+}
+
 void Snow::Sprite::setFilename(const std::string &filename)
 {
 	_width = 0;

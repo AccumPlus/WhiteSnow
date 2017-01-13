@@ -41,15 +41,12 @@ void Snow::Printer::work()
 	}
 
 	// Так как все спрайты были предварительно обрезаны под камеру, можно просто выводить на экран результирующий как есть
+	long row = 0;
 	for (auto tStr: resultSpriteSegment.getSprite()._field)
-	{
-		// TODO добавить печать строки
-		// Печатаем строку ставим \n
-		;
-	}
+		printString(tStr, row++, 0, true);
 }
 
-bool compareLayers(Snow::Object* first, Snow::Object *second)
+bool Snow::compareLayers(Snow::Object* first, Snow::Object *second)
 {
 	bool res;
 	first->lockFullMutex();
@@ -58,4 +55,24 @@ bool compareLayers(Snow::Object* first, Snow::Object *second)
 	first->unlockFullMutex();
 	second->unlockFullMutex();
 	return res;
+}
+
+void Snow::Printer::printString(std::string str, const long &row, const long &col, const bool &clear)
+{
+	// Отрезаем хваост строки, если длинее ширины камеры
+	if (col + (signed long)str.length() > _camera->getWidth())
+		str = str.substr(0, str.length() - (col + str.length() - _camera->getWidth()));
+
+	// Добавляем слева и справа пробелы, если надо чистить всю строку
+	if (clear)
+	{
+		if (col != 0)
+			str = std::string(col, ' ') + str;
+		if (col + (signed long)str.length() < _camera->getWidth())
+			str += std::string(_camera->getWidth() - (col + str.length()), ' ');
+	}
+
+	move(row, col);
+	printw(str.c_str());
+	refresh();
 }
