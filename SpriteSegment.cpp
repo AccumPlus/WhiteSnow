@@ -1,9 +1,11 @@
 #include <string>
+#include <iostream>
 
 #include "SpriteSegment.h"
 
 Snow::SpriteSegment::SpriteSegment()
 {
+	std::cout << "SpriteSegment constructor" << "\n\r";
 }
 
 Snow::SpriteSegment::~SpriteSegment()

@@ -1,8 +1,11 @@
+#include <iostream>
+
 #include "ObjectArray.h"
 #include "Object.h"
 
 Snow::ObjectArray::ObjectArray()
 {
+	std::cout << "ObjectArray constructor" << std::endl;
 }
 
 Snow::ObjectArray::~ObjectArray()
@@ -11,6 +14,8 @@ Snow::ObjectArray::~ObjectArray()
 
 void Snow::ObjectArray::addObject(std::string name, Snow::Object *object)
 {
+	std::cout << "ObjectArray add object" << std::endl;
+
 	auto it = _objects.find(name);
 	if (it == _objects.end())
 		_objects[name] = object;
@@ -52,7 +57,7 @@ Snow::Object* Snow::ObjectArray::getObject(const std::string &name) const
 std::vector<Snow::Object*> Snow::ObjectArray::getArray() const
 {
 	std::vector<Snow::Object*> tArray;
-	for (auto &obj: _objects)
+	for (auto obj: _objects)
 		tArray.push_back(obj.second);
 	return tArray;
 }

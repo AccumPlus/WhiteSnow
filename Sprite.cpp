@@ -1,10 +1,12 @@
 #include <fstream>
+#include <iostream>
 
 #include "Sprite.h"
 
 Snow::Sprite::Sprite():
 	_filename(""), _width(0), _height(0)
 {
+	std::cout << "Sprite constructor" << "\n\r";
 }
 
 Snow::Sprite::Sprite(const std::string &filename)
@@ -18,6 +20,8 @@ Snow::Sprite::~Sprite()
 
 void Snow::Sprite::setFilename(const std::string &filename)
 {
+	std::cout << "Sprite setfilename" << "\n\r";
+
 	_width = 0;
 	_height = 0;
 	_field.clear();
@@ -37,6 +41,8 @@ void Snow::Sprite::setFilename(const std::string &filename)
 
 		++_height;
 	}
+	_field.pop_back();
+	--_height;
 
 	spriteStream.close();
 
@@ -89,15 +95,26 @@ long Snow::Sprite::getHeight() const
 
 Snow::Sprite Snow::Sprite::getCut(const long &startCol, const long &startRow, const long &endCol, const long &endRow) const
 {
+	std::cout << "Sprite getCut" << "\n\r";
+	std::cout << "Col = " << startCol << ' ' << endCol << "\n\r";
+	std::cout << "Row = " << startRow << ' ' << endRow << "\n\r";
+
+	std::cout << "\n\r";
+
 	std::vector<std::string> newField;
 	for (long i = startRow; i <= endRow; ++i)
 	{
+		std::cout << _field.at(i) << "\n\r";
 		std::string tStr = _field.at(i).substr(startCol, endCol - startCol);
 		newField.push_back(tStr);
 	}
 
+	std::cout << "Before setting sprite" << std::endl;
+
 	Snow::Sprite newSprite;
 	newSprite.setSprite(newField);
+
+	std::cout << "Sprite getCut end" << std::endl;
 
 	return newSprite;
 }

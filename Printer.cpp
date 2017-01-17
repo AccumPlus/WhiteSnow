@@ -1,5 +1,6 @@
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 #include "Printer.h"
 #include "Camera.h"
@@ -8,6 +9,7 @@
 
 Snow::Printer::Printer(Snow::Camera *camera, const Snow::ObjectArray& objectArray)
 {
+	std::cout << "Printer constructor" << "\n\r";
 	_camera = camera;
 	_objectArray = objectArray;
 }
@@ -18,18 +20,28 @@ Snow::Printer::~Printer()
 
 void Snow::Printer::work()
 {
+	std::cout << "Printer work" << "\n\r";
+
 	// Получаем вектор объектов, отсортированный по слоям от нижнего к верхнему
 	std::vector<Object*> tObjects = _objectArray.getArray();
 	std::sort(tObjects.begin(), tObjects.end(), compareLayers);
 
+	std::cout << "SpriteSegment" << "\n\r";
 	// Результирующий спрайт-сегмент
 	Snow::SpriteSegment resultSpriteSegment;
 
 	// Точки камеры
 	Snow::Position camUpLeft = _camera->getPosition();
 	Snow::Position camDownRight;
-	camDownRight.setX(camUpLeft.getX() + _camera->getWidth());
-	camDownRight.setY(camUpLeft.getY() + _camera->getHeight());
+	camDownRight.setX(camUpLeft.getX() + _camera->getWidth() - 1);
+	camDownRight.setY(camUpLeft.getY() + _camera->getHeight() - 1);
+
+	std::cout << "Camera points:" << "\n\r";
+	std::cout << "UL = " << camUpLeft.getX() << ' ' << camUpLeft.getY() << "\n\r";
+	std::cout << "DR = " << camDownRight.getX() << ' ' << camDownRight.getY() << "\n\r";
+
+
+	std::cout << "Complex part" << "\n\r";
 
 	// Получаем результирующий спрайт-сегмент в абсолютных позициях
 	for (Object* object: tObjects)
@@ -44,6 +56,7 @@ void Snow::Printer::work()
 	long row = 0;
 	for (auto tStr: resultSpriteSegment.getSprite()._field)
 		printString(tStr, row++, 0, true);
+
 }
 
 bool Snow::compareLayers(Snow::Object* first, Snow::Object *second)
@@ -59,7 +72,12 @@ bool Snow::compareLayers(Snow::Object* first, Snow::Object *second)
 
 void Snow::Printer::printString(std::string str, const long &row, const long &col, const bool &clear)
 {
-	// Отрезаем хваост строки, если длинее ширины камеры
+	move(1, 0);
+	printw("0000000");
+	refresh();
+	getch();
+	return;
+	// Отрезаем хвост строки, если длинее ширины камеры
 	if (col + (signed long)str.length() > _camera->getWidth())
 		str = str.substr(0, str.length() - (col + str.length() - _camera->getWidth()));
 
