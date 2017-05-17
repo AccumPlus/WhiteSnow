@@ -80,8 +80,13 @@ Snow::SpriteSegment Snow::Object::getSpriteSegment(const Snow::Position &pointUp
 	std::cout << "New object coords:" << "\n\r";
 	std::cout << "UL: " << newObjUpLeft.getX() << ' ' << newObjUpLeft.getY() << "\n\r";
 	std::cout << "DR: " << newObjDownRight.getX() << ' ' << newObjDownRight.getY() << "\n\r";
+
+	std::cout << "Old sprite coords:" << "\n\r";
+	std::cout << "W,H: " << _sprite.getWidth() << ' ' << _sprite.getHeight() << "\n\r";
 	tSpriteSegment.setSprite(_sprite.getCut(newObjUpLeft.getX(), newObjUpLeft.getY(), newObjDownRight.getX(), newObjDownRight.getY()));
 	tSpriteSegment.setPosition(newObjUpLeft.getX(), newObjUpLeft.getY());
+
+	std::cout << "New W,H: " << tSpriteSegment.getSprite().getWidth() << ' ' << tSpriteSegment.getSprite().getHeight() << "\n\r";
 
 	std::cout << "step 5" << "\n\r";
 	return tSpriteSegment;

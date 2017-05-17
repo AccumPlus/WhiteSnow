@@ -54,23 +54,30 @@ void Snow::Sprite::setFilename(const std::string &filename)
 
 void Snow::Sprite::setSprite(std::vector<std::string> field)
 {
-	long _width = 0;
-	long _height = 0;
+	_width = 0;
+	_height = 0;
 	_field.clear();
 
 	for (std::string tStr: field)
 	{
+		std::cout << tStr << "\n\r";
 		_field.push_back(tStr);
 
 		++_height;
 		if ((signed long)tStr.length() > _width)
 			_width = tStr.length();
+
+		std::cout << "Height = " << _height << "\n\r";
+		std::cout << "Width = " << _width << "\n\r";
 	}
 
 	// Дополнение пробелами
 	for (std::string tStr: _field)
 		if ((signed long)tStr.length() < _width)
 			tStr += std::string(_width - tStr.length(), ' ');
+
+		std::cout << "!!!Height = " << _height << "\n\r";
+		std::cout << "!!!Width = " << _width << "\n\r";
 }
 
 std::string Snow::Sprite::getFilename() const
@@ -106,15 +113,19 @@ Snow::Sprite Snow::Sprite::getCut(const long &startCol, const long &startRow, co
 	{
 		std::cout << _field.at(i) << "\n\r";
 		std::string tStr = _field.at(i).substr(startCol, endCol - startCol);
+		std::cout << tStr << "\n\r";
 		newField.push_back(tStr);
 	}
 
-	std::cout << "Before setting sprite" << std::endl;
+	std::cout << "Before setting sprite" << "\n\r";
 
 	Snow::Sprite newSprite;
 	newSprite.setSprite(newField);
 
-	std::cout << "Sprite getCut end" << std::endl;
+	std::cout << "newSprite W,H = " << newSprite.getWidth() << ' ' << newSprite.getHeight() << "\n\r";
+
+
+	std::cout << "Sprite getCut end" << "\n\r";
 
 	return newSprite;
 }
