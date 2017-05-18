@@ -5,7 +5,6 @@
 
 Snow::SpriteSegment::SpriteSegment()
 {
-	std::cout << "SpriteSegment constructor" << "\n\r";
 }
 
 Snow::SpriteSegment::~SpriteSegment()
@@ -34,12 +33,6 @@ void Snow::SpriteSegment::addAbove(const SpriteSegment &spriteSegment)
 	Snow::Position newUpLeft;
 	Snow::Position newDownRight;
 
-	std::cout << "In addAbove:" << "\n\r";
-	std::cout << "_pos.getXY = " << _position.getX() << ' ' << _position.getY() << "\n\r";
-	std::cout << "_segm.getXY = " << spriteSegment.getPosition().getX() << ' ' << spriteSegment.getPosition().getX() << "\n\r";
-
-	std::cout << "spriteSegment.sprite = " << spriteSegment.getSprite().getWidth() << ' ' << spriteSegment.getSprite().getWidth() << "\n\r";
-
 	newUpLeft.setX(_position.getX() < spriteSegment.getPosition().getX() ? _position.getX() : spriteSegment.getPosition().getX());
 	newUpLeft.setY(_position.getY() < spriteSegment.getPosition().getY() ? _position.getY() : spriteSegment.getPosition().getY());
 
@@ -50,19 +43,12 @@ void Snow::SpriteSegment::addAbove(const SpriteSegment &spriteSegment)
 		t2.setX(spriteSegment.getPosition().getX() + spriteSegment.getSprite().getWidth());
 		t2.setY(spriteSegment.getPosition().getY() + spriteSegment.getSprite().getHeight());
 		
-		std::cout << "_t1.getXY = " << t1.getX() << ' ' << t1.getY() << "\n\r";
-		std::cout << "_t2.getXY = " << t2.getX() << ' ' << t2.getX() << "\n\r";
-
 		newDownRight.setX(t1.getX() > t2.getX() ? t1.getX() : t2.getX());
 		newDownRight.setY(t1.getY() > t2.getY() ? t1.getY() : t2.getY());
 	}
 
 	long newWidth = newDownRight.getX() - newUpLeft.getX();
 	long newHeight = newDownRight.getY() - newUpLeft.getY();
-
-	std::cout << "UL = " << newUpLeft.getX() << ' ' << newUpLeft.getY() << "\n\r";
-	std::cout << "DR = " << newDownRight.getX() << ' ' << newDownRight.getY() << "\n\r";
-	std::cout << "Width = " << newWidth << " Height = " << newHeight << "\n\r";
 
 	// Добавляем к спрайту текущего сегмента недостающие строки/столбцы
 	// Слева
@@ -84,9 +70,13 @@ void Snow::SpriteSegment::addAbove(const SpriteSegment &spriteSegment)
 	_sprite._height = newHeight;
 
 	// Накладываем новый спрайт на него
-	for (unsigned long i = 0; i < _sprite._field.size(); ++i)
-		for (unsigned long j = 0; j < _sprite._field[i].length(); ++j)
+	for (unsigned long i = 0; i < spriteSegment._sprite._field.size(); ++i)
+	{
+		for (unsigned long j = 0; j < spriteSegment._sprite._field[i].length(); ++j)
+		{
 			_sprite._field[i + spriteSegment._position.getY()][j + spriteSegment._position.getX()] = spriteSegment._sprite._field[i][j];
+		}
+	}
 }
 
 Snow::Sprite Snow::SpriteSegment::getSprite() const

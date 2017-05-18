@@ -18,9 +18,9 @@ namespace Snow
 		Object();
 		virtual ~Object();
 
-		void setPosition(const long &x, const long &y);
 		void setSprite(const std::string &filename);
 		void setLayerNumber(const long &layerNumber);
+		void setPosition(const long &x, const long &y);
 		void setParent(Snow::ObjectArray *parent);
 
 		Snow::Position getPosition() const;

@@ -12,12 +12,12 @@ namespace Snow
 	class Printer
 	{
 	public:
-		Printer(const Snow::Camera &camera, const Snow::ObjectArray &objectArray);
+		Printer(const Snow::ObjectArray &objectArray);
 		~Printer();
 
 		void work();
 	private:
-		const Camera &_camera;
+		std::shared_ptr<Camera> _camera;
 		const ObjectArray &_objectArray;
 
 		// clear - очистить строку, в которую производится вывод

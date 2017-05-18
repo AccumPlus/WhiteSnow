@@ -22,7 +22,6 @@ namespace Snow
 
 		std::shared_ptr<Snow::Object> getObject(const std::string &name) const;
 		std::vector<std::shared_ptr<Snow::Object> > getArray() const;
-		unsigned long getCount() const;
 	private:
 		std::map<std::string, std::shared_ptr<Snow::Object> > _objects;
 	};

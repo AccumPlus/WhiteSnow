@@ -5,7 +5,6 @@
 
 Snow::ObjectArray::ObjectArray()
 {
-	std::cout << "ObjectArray constructor" << std::endl;
 }
 
 Snow::ObjectArray::~ObjectArray()
@@ -14,8 +13,6 @@ Snow::ObjectArray::~ObjectArray()
 
 void Snow::ObjectArray::addObject(const std::string &name, const std::shared_ptr<Snow::Object> &object)
 {
-	std::cout << "ObjectArray add object" << std::endl;
-
 	auto it = _objects.find(name);
 	if (it == _objects.end())
 		_objects[name] = object;
@@ -62,9 +59,4 @@ std::vector<std::shared_ptr<Snow::Object> > Snow::ObjectArray::getArray() const
 	for (auto obj: _objects)
 		tArray.push_back(obj.second);
 	return tArray;
-}
-
-unsigned long Snow::ObjectArray::getCount() const
-{
-	return _objects.size();
 }
