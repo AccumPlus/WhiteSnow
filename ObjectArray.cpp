@@ -19,6 +19,8 @@ void Snow::ObjectArray::addObject(const std::string &name, const std::shared_ptr
 	auto it = _objects.find(name);
 	if (it == _objects.end())
 		_objects[name] = object;
+
+	object->setParent(this);
 }
 
 void Snow::ObjectArray::removeObject(const std::string &name)
@@ -60,4 +62,9 @@ std::vector<std::shared_ptr<Snow::Object> > Snow::ObjectArray::getArray() const
 	for (auto obj: _objects)
 		tArray.push_back(obj.second);
 	return tArray;
+}
+
+unsigned long Snow::ObjectArray::getCount() const
+{
+	return _objects.size();
 }

@@ -44,3 +44,7 @@ long Snow::Camera::getHeight() const
 {
 	return _height;
 }
+
+void Snow::Camera::work()
+{
+}

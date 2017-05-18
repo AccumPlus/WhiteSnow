@@ -10,6 +10,8 @@
 
 namespace Snow
 {
+	class ObjectArray;
+
 	class Object
 	{
 	public:
@@ -19,6 +21,7 @@ namespace Snow
 		void setPosition(const long &x, const long &y);
 		void setSprite(const std::string &filename);
 		void setLayerNumber(const long &layerNumber);
+		void setParent(Snow::ObjectArray *parent);
 
 		Snow::Position getPosition() const;
 		Snow::Sprite getSprite() const;
@@ -27,13 +30,16 @@ namespace Snow
 		Snow::SpriteSegment getSpriteSegment(const Snow::Position &pointUpLeft, const Snow::Position &pointDownRight) const;
 		void lockFullMutex();
 		void unlockFullMutex();
+
+		// Основная функция логики работы объекта
+		virtual void work();
 		
 	protected:
 		Snow::Position _position;
 		Snow::Sprite _sprite;
 		long _layerNumber;
 		std::mutex _fullMutex;
-
+		ObjectArray *_parent;
 	};
 }
 

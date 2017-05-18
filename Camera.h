@@ -18,6 +18,8 @@ namespace Snow
 		Snow::Position getPosition() const;
 		long getWidth() const;
 		long getHeight() const;
+
+		void work();
 	protected:
 		Snow::Position _position;
 		long _width, _height;

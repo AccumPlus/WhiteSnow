@@ -31,6 +31,11 @@ void Snow::Object::setLayerNumber(const long &layerNumber)
 	_layerNumber = layerNumber;
 }
 
+void Snow::Object::setParent(Snow::ObjectArray *parent)
+{
+	this->_parent = parent;
+}
+
 Snow::Position Snow::Object::getPosition() const
 {
 	return _position;
@@ -102,3 +107,6 @@ void Snow::Object::unlockFullMutex()
 	_fullMutex.unlock();
 }
 
+void Snow::Object::work()
+{
+}
