@@ -1,5 +1,7 @@
 #include <curses.h>
 
+#include <memory>
+
 #include "Printer.h"
 #include "Camera.h"
 #include "ObjectArray.h"
@@ -14,14 +16,17 @@ int main()
 	
 	Snow::ObjectArray objectArray;
 
-	Snow::Object *obj = new Snow::Object();
+	auto obj = std::make_shared<Snow::Object>();
+//	Snow::Object *obj = new Snow::Object();
 	obj->setSprite("../etc/example.sprite");
 	obj->setPosition(0, 0);
 	obj->setLayerNumber(0);
 
 	objectArray.addObject("FirstObject", obj);
 
-	Snow::Printer pr(&camera, objectArray);
+	obj.reset();
+
+	Snow::Printer pr(camera, objectArray);
 
 	initscr();
 
@@ -30,8 +35,6 @@ int main()
 	getch();
 
 	endwin();
-
-	delete obj;
 
 	return 0;
 }

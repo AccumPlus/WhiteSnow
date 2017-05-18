@@ -12,20 +12,20 @@ namespace Snow
 	class Printer
 	{
 	public:
-		Printer(Snow::Camera *camera, const Snow::ObjectArray& objectArray);
+		Printer(const Snow::Camera &camera, const Snow::ObjectArray &objectArray);
 		~Printer();
 
 		void work();
 	private:
-		Camera *_camera;
-		ObjectArray _objectArray;
+		const Camera &_camera;
+		const ObjectArray &_objectArray;
 
 		// clear - очистить строку, в которую производится вывод
 		void printString(std::string str, const long &row, const long &col, const bool &clear = false);
 
 	};
 
-	bool compareLayers(Object* first, Object *second);
+	bool compareLayers(std::shared_ptr<Snow::Object> first, std::shared_ptr<Snow::Object> second);
 }
 
 #endif

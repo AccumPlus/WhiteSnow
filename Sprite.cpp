@@ -112,7 +112,7 @@ Snow::Sprite Snow::Sprite::getCut(const long &startCol, const long &startRow, co
 	for (long i = startRow; i <= endRow; ++i)
 	{
 		std::cout << _field.at(i) << "\n\r";
-		std::string tStr = _field.at(i).substr(startCol, endCol - startCol);
+		std::string tStr = _field.at(i).substr(startCol, endCol - startCol + 1);
 		std::cout << tStr << "\n\r";
 		newField.push_back(tStr);
 	}

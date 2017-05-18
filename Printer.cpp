@@ -7,7 +7,7 @@
 #include "Object.h"
 #include "SpriteSegment.h"
 
-Snow::Printer::Printer(Snow::Camera *camera, const Snow::ObjectArray& objectArray):
+Snow::Printer::Printer(const Snow::Camera &camera, const Snow::ObjectArray& objectArray):
 	_camera{camera}, _objectArray{objectArray}
 {
 	std::cout << "Printer constructor" << "\n\r";
@@ -22,7 +22,7 @@ void Snow::Printer::work()
 	std::cout << "Printer work" << "\n\r";
 
 	// Получаем вектор объектов, отсортированный по слоям от нижнего к верхнему
-	std::vector<Object*> tObjects = _objectArray.getArray();
+	auto tObjects = _objectArray.getArray();
 	std::sort(tObjects.begin(), tObjects.end(), compareLayers);
 
 	std::cout << "SpriteSegment" << "\n\r";
@@ -30,10 +30,10 @@ void Snow::Printer::work()
 	Snow::SpriteSegment resultSpriteSegment;
 
 	// Точки камеры
-	Snow::Position camUpLeft = _camera->getPosition();
+	Snow::Position camUpLeft = _camera.getPosition();
 	Snow::Position camDownRight;
-	camDownRight.setX(camUpLeft.getX() + _camera->getWidth() - 1);
-	camDownRight.setY(camUpLeft.getY() + _camera->getHeight() - 1);
+	camDownRight.setX(camUpLeft.getX() + _camera.getWidth() - 1);
+	camDownRight.setY(camUpLeft.getY() + _camera.getHeight() - 1);
 
 	std::cout << "Camera points:" << "\n\r";
 	std::cout << "UL = " << camUpLeft.getX() << ' ' << camUpLeft.getY() << "\n\r";
@@ -42,7 +42,7 @@ void Snow::Printer::work()
 	std::cout << "Complex part" << "\n\r";
 
 	// Получаем результирующий спрайт-сегмент в абсолютных позициях
-	for (Object* object: tObjects)
+	for (auto object: tObjects)
 	{
 		object->lockFullMutex();
 		SpriteSegment tSegment = object->getSpriteSegment(camUpLeft, camDownRight);
@@ -64,7 +64,7 @@ void Snow::Printer::work()
 	}
 }
 
-bool Snow::compareLayers(Snow::Object* first, Snow::Object *second)
+bool Snow::compareLayers(std::shared_ptr<Snow::Object> first, std::shared_ptr<Snow::Object> second)
 {
 	bool res;
 	first->lockFullMutex();
@@ -84,16 +84,16 @@ void Snow::Printer::printString(std::string str, const long &row, const long &co
 //	return;
 
 	// Отрезаем хвост строки, если длинее ширины камеры
-	if (col + (signed long)str.length() > _camera->getWidth())
-		str = str.substr(0, str.length() - (col + str.length() - _camera->getWidth()));
+	if (col + (signed long)str.length() > _camera.getWidth())
+		str = str.substr(0, str.length() - (col + str.length() - _camera.getWidth()));
 
 	// Добавляем слева и справа пробелы, если надо чистить всю строку
 	if (clear)
 	{
 		if (col != 0)
 			str = std::string(col, ' ') + str;
-		if (col + (signed long)str.length() < _camera->getWidth())
-			str += std::string(_camera->getWidth() - (col + str.length()), ' ');
+		if (col + (signed long)str.length() < _camera.getWidth())
+			str += std::string(_camera.getWidth() - (col + str.length()), ' ');
 	}
 
 	move(row, col);
