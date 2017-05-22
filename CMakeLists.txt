@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 2.8.11)
 
+set (CMAKE_BUILD_TYPE Debug)
+
 set(PROJECT Temp)
 
 set (SRC 	main.cpp
 			myObject/myObject.cpp
+			myObject2/myObject2.cpp
 			Controller.cpp
 			Camera.cpp
 			Object.cpp
@@ -14,7 +17,7 @@ set (SRC 	main.cpp
 			SpriteSegment.cpp)
 
 set (HDR 	Camera.h
-			myObject/myObject.h
+			myObject2/myObject2.h
 			Controller.h
 			Object.h
 			ObjectArray.h

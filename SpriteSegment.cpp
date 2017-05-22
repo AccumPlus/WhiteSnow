@@ -27,6 +27,8 @@ Snow::Position Snow::SpriteSegment::getPosition() const
 	return _position;
 }
 
+// Метод "наклеивания" сегмента на текущий сегмент.
+// Результат - сегмент с расширенными координатами
 void Snow::SpriteSegment::addAbove(const SpriteSegment &spriteSegment)
 {
 	// Получаем новые точки
@@ -38,33 +40,58 @@ void Snow::SpriteSegment::addAbove(const SpriteSegment &spriteSegment)
 
 	{
 		Snow::Position t1, t2;
-		t1.setX(_position.getX() + _sprite.getWidth());
-		t1.setY(_position.getY() + _sprite.getHeight());
-		t2.setX(spriteSegment.getPosition().getX() + spriteSegment.getSprite().getWidth());
-		t2.setY(spriteSegment.getPosition().getY() + spriteSegment.getSprite().getHeight());
+		t1.setX(_position.getX() + _sprite.getWidth() - 1);
+		t1.setY(_position.getY() + _sprite.getHeight() - 1);
+		t2.setX(spriteSegment.getPosition().getX() + spriteSegment.getSprite().getWidth() - 1);
+		t2.setY(spriteSegment.getPosition().getY() + spriteSegment.getSprite().getHeight() - 1);
 		
 		newDownRight.setX(t1.getX() > t2.getX() ? t1.getX() : t2.getX());
 		newDownRight.setY(t1.getY() > t2.getY() ? t1.getY() : t2.getY());
 	}
 
-	long newWidth = newDownRight.getX() - newUpLeft.getX();
-	long newHeight = newDownRight.getY() - newUpLeft.getY();
+	long newWidth = newDownRight.getX() - newUpLeft.getX() + 1;
+	long newHeight = newDownRight.getY() - newUpLeft.getY() + 1;
+
+//	std::cout << "newUL: " << newUpLeft.getX() << ' ' << newUpLeft.getY() << "\n\r";
+//	std::cout << "newDR: " << newDownRight.getX() << ' ' << newDownRight.getY() << "\n\r";
+//
+//	std::cout << "newWidth = " << newWidth << "\n\r";
+//	std::cout << "newHeight = " << newHeight << "\n\r";
 
 	// Добавляем к спрайту текущего сегмента недостающие строки/столбцы
 	// Слева
 	if (newUpLeft.getX() < _position.getX())
-		for (std::string tStr: _sprite._field)
+	{
+//		std::cout << "Inserting left..." << "\n\r";
+		for (std::string &tStr: _sprite._field)
+		{
 			tStr.insert(tStr.begin(), _position.getX() - newUpLeft.getX(), ' ');
+		}
+	}
+
 	// Справа
-	if (newDownRight.getX() > _position.getX() + _sprite.getWidth())
-		for (std::string tStr: _sprite._field)
-			tStr.insert(tStr.end(), newDownRight.getX() - (_position.getX() + _sprite.getWidth()), ' ');
+	if (newDownRight.getX() > _position.getX() + _sprite.getWidth() - 1)
+	{
+//		std::cout << "Inserting right..." << "\n\r";
+		for (std::string &tStr: _sprite._field)
+		{
+			tStr.insert(tStr.end(), newDownRight.getX() - (_position.getX() + _sprite.getWidth() - 1), ' ');
+		}
+	}
+
 	// Сверху
-	for (long i = 0; i < newUpLeft.getY() - _position.getY(); ++i)
+	for (long i = 0; i < _position.getY() - newUpLeft.getY(); ++i)
+	{
+//		std::cout << "Inserting up... " << i << "\n\r";
 		_sprite._field.insert(_sprite._field.begin(), std::string(newWidth, ' '));
+	}
+
 	// Снизу
-	for (long i = 0; i < newDownRight.getY() - (_position.getY() + _sprite.getHeight()); ++i)
+	for (long i = 0; i < newDownRight.getY() - (_position.getY() + _sprite.getHeight() - 1); ++i)
+	{
+//		std::cout << "Inserting down... " << i << "\n\r";
 		_sprite._field.insert(_sprite._field.end(), std::string(newWidth, ' '));
+	}
 
 	_sprite._width = newWidth;
 	_sprite._height = newHeight;

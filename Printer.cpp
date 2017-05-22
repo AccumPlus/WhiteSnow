@@ -33,7 +33,11 @@ void Snow::Printer::work()
 	{
 		// Получаем вектор объектов, отсортированный по слоям от нижнего к верхнему
 		auto tObjects = _objectArray.getArray();
-		std::sort(tObjects.begin(), tObjects.end(), compareLayers);
+		std::sort(tObjects.begin(), tObjects.end(), 
+				[](const std::shared_ptr<Snow::Object> &first, const std::shared_ptr<Snow::Object> &second)
+				{
+					return first->getLayerNumber() < second->getLayerNumber();
+				});
 
 	//	std::cout << "SpriteSegment" << "\n\r";
 		// Результирующий спрайт-сегмент
@@ -51,6 +55,9 @@ void Snow::Printer::work()
 	//	std::cout << "DR = " << camDownRight.getX() << ' ' << camDownRight.getY() << "\n\r";
 	//
 	//	std::cout << "Complex part" << "\n\r";
+		
+		// TODO обработать спрайт-сегмент для камеры
+		
 
 		// Получаем результирующий спрайт-сегмент в абсолютных позициях
 		for (auto object: tObjects)
@@ -83,20 +90,23 @@ void Snow::Printer::work()
 			printString(tStr, row++, 0, true);
 		}
 
+		// TODO вывести 
+
 	}
 }
 
-bool Snow::compareLayers(std::shared_ptr<Snow::Object> first, std::shared_ptr<Snow::Object> second)
-{
-	bool res;
-	first->lockFullMutex();
-	second->lockFullMutex();
-	res = first->getLayerNumber() > second->getLayerNumber();
-	first->unlockFullMutex();
-	second->unlockFullMutex();
-	return res;
-}
+//bool Snow::compareLayers(std::shared_ptr<Snow::Object> first, std::shared_ptr<Snow::Object> second)
+//{
+//	bool res;
+////	first->lockFullMutex();
+////	second->lockFullMutex();
+//	res = first->getLayerNumber() > second->getLayerNumber();
+////	first->unlockFullMutex();
+////	second->unlockFullMutex();
+//	return res;
+//}
 
+// TODO как следует пересмотреть!
 void Snow::Printer::printString(std::string str, const long &row, const long &col, const bool &clear)
 {
 //	move(1, 0);
@@ -106,8 +116,8 @@ void Snow::Printer::printString(std::string str, const long &row, const long &co
 //	return;
 
 	// Отрезаем хвост строки, если длинее ширины камеры
-	if (col + (signed long)str.length() > _camera->getWidth())
-		str = str.substr(0, str.length() - (col + str.length() - _camera->getWidth()));
+//	if (col + (signed long)str.length() > _camera->getWidth())
+//		str = str.substr(0, str.length() - (col + str.length() - _camera->getWidth()));
 
 	// Добавляем слева и справа пробелы, если надо чистить всю строку
 	if (clear)

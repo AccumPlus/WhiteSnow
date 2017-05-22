@@ -99,7 +99,6 @@ Snow::Sprite Snow::Sprite::getCut(const long &startCol, const long &startRow, co
 		newField.push_back(tStr);
 	}
 
-
 	Snow::Sprite newSprite;
 	newSprite.setSprite(newField);
 

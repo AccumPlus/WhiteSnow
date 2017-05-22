@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <mutex>
 
 namespace Snow
 {
@@ -24,6 +25,7 @@ namespace Snow
 		std::vector<std::shared_ptr<Snow::Object> > getArray() const;
 	private:
 		std::map<std::string, std::shared_ptr<Snow::Object> > _objects;
+		mutable std::mutex _mut;
 	};
 }
 

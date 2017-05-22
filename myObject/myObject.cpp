@@ -20,24 +20,27 @@ void MyObject::work()
 {
 	auto camera = std::static_pointer_cast<Snow::Camera>(_parent->getObject("__camera__"));
 
-	Snow::Position tDownRight;
-	tDownRight.setX(_position.getX() + _sprite.getWidth());
-	tDownRight.setY(_position.getY() + _sprite.getHeight());
-
 	bool dir = true;
 	
 	while (true)
 	{
 		sleep(1);
 		if (dir)
+		{
 			_position.setX(_position.getX() + 1);
+			if (_position.getX() + _sprite.getWidth() == camera->getPosition().getX() + camera->getWidth())
+			{
+				dir = false;
+			}
+		}
 		else
+		{
 			_position.setX(_position.getX() - 1);
+			if (_position.getX() == camera->getPosition().getX())
+			{
+				dir = true;
+			}
 
-		if (tDownRight.getX() == camera->getWidth() - 1)
-			dir = false;
-
-		if (tDownRight.getX() == camera->getPosition().getX())
-			dir = true;
+		}
 	}
 }

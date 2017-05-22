@@ -47,6 +47,8 @@ long Snow::Object::getLayerNumber() const
 	return _layerNumber;
 }
 
+// Метод "вырезания" сегмента спрайта по переданным координатам.
+// Полученный объекст - просто спрайт с координатами.
 Snow::SpriteSegment Snow::Object::getSpriteSegment(const Snow::Position &pointUpLeft, const Snow::Position &pointDownRight) const
 {
 	Snow::SpriteSegment tSpriteSegment;
@@ -57,7 +59,7 @@ Snow::SpriteSegment Snow::Object::getSpriteSegment(const Snow::Position &pointUp
 	objDownRight.setX(_position.getX() + _sprite.getWidth() - 1);
 	objDownRight.setY(_position.getY() + _sprite.getHeight() - 1);
 
-	// Условия непопадания в желаемый квадрат
+	// Условия непопадания в желаемый прямоугольник
 	if ( (objUpLeft.getX() < pointUpLeft.getX() && objDownRight.getX() < pointUpLeft.getX()) || 
 			(objUpLeft.getX() > pointDownRight.getX() && objDownRight.getX() > pointDownRight.getX()) || 
 			(objUpLeft.getY() < pointUpLeft.getY() && objDownRight.getY() < pointUpLeft.getY()) ||
