@@ -24,7 +24,7 @@ void MyObject::work()
 	
 	while (true)
 	{
-		usleep(10000);
+		usleep(100000);
 		if (dir)
 		{
 			_position.setX(_position.getX() + 1);

@@ -5,7 +5,6 @@
 #include "Printer.h"
 #include "Camera.h"
 #include "Object.h"
-#include "SpriteSegment.h"
 
 Snow::Printer::Printer(const Snow::ObjectArray& objectArray):
 	_objectArray{objectArray}

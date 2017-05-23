@@ -18,8 +18,8 @@ int main()
 	Snow::ObjectArray objectArray;
 
 	auto camera = std::make_shared<Snow::Camera>();
-	camera->setWidth(100);
-	camera->setHeight(40);
+	camera->setWidth(40);
+	camera->setHeight(20);
 	camera->setPosition(0, 0);
 	camera->setLayerNumber(-1);
 	
@@ -37,7 +37,7 @@ int main()
 	{
 		auto obj = std::make_shared<MyObject2>();
 		obj->setSprite("../etc/example2.sprite");
-		obj->setPosition(0, 1);
+		obj->setPosition(5, 1);
 		obj->setLayerNumber(0);
 
 		objectArray.addObject("SecondObject", obj);
@@ -47,6 +47,7 @@ int main()
 	Snow::Controller cr(objectArray);
 
 	initscr();
+	curs_set(0);
 
 	std::thread thr(&Snow::Printer::work, pr);
 //	pr.work();
