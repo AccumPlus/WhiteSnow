@@ -20,11 +20,12 @@
 
 #include <string>
 #include <vector>
+#include <mutex>
 
 namespace Snow
 {
 	class Printer;
-	class SpriteSegment;
+	class SpriteObject;
 
 	class Sprite
 	{
@@ -32,11 +33,14 @@ namespace Snow
 		// Принтер работает на низком уровне. Даём ему достум к private переменным
 		friend Snow::Printer;
 		// При склеивании спрайтов Спрайт-сегменту нужен доступ к массиву
-		friend Snow::SpriteSegment;
+		friend Snow::SpriteObject;
 
 		Sprite();
+		Sprite(const Sprite&);
 		Sprite(const std::string &filename);
 		~Sprite();
+
+		Sprite& operator = (const Sprite&);
 
 		void setFilename(const std::string &filename);
 		void setSprite(std::vector<std::string> field);
@@ -52,6 +56,7 @@ namespace Snow
 		std::vector<std::string> _field;
 		long _width;
 		long _height;
+		mutable std::mutex _mut;
 	};
 }
 

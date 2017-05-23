@@ -14,7 +14,7 @@ set (SRC 	main.cpp
 			Position.cpp
 			Printer.cpp
 			Sprite.cpp
-			SpriteSegment.cpp)
+			SpriteObject.cpp)
 
 set (HDR 	Camera.h
 			myObject2/myObject2.h
@@ -24,7 +24,7 @@ set (HDR 	Camera.h
 			Position.h
 			Printer.h
 			Sprite.h
-			SpriteSegment.h)
+			SpriteObject.h)
 
 add_executable(${PROJECT} ${SRC} ${HDR})
 

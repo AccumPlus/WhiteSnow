@@ -6,39 +6,27 @@
 
 #include "Position.h"
 #include "Sprite.h"
-#include "SpriteSegment.h"
+#include "SpriteObject.h"
 
 namespace Snow
 {
 	class ObjectArray;
 
-	class Object
+	class Object: public Snow::SpriteObject
 	{
 	public:
 		Object();
 		virtual ~Object();
 
-		void setSprite(const std::string &filename);
-		void setLayerNumber(const long &layerNumber);
-		void setPosition(const long &x, const long &y);
 		void setParent(Snow::ObjectArray *parent);
 
-		Snow::Position getPosition() const;
-		Snow::Sprite getSprite() const;
-		long getLayerNumber() const;
-
-		Snow::SpriteSegment getSpriteSegment(const Snow::Position &pointUpLeft, const Snow::Position &pointDownRight) const;
-		void lockFullMutex();
-		void unlockFullMutex();
+		Snow::SpriteObject getSpriteObject();
 
 		// Основная функция логики работы объекта
-		virtual void work();
+		virtual void work() = 0;
 		
 	protected:
-		Snow::Position _position;
-		Snow::Sprite _sprite;
-		long _layerNumber;
-		std::mutex _fullMutex;
+		mutable std::mutex _mut;
 		ObjectArray *_parent;
 	};
 }

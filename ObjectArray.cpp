@@ -2,6 +2,7 @@
 
 #include "ObjectArray.h"
 #include "Object.h"
+#include "SpriteObject.h"
 
 Snow::ObjectArray::ObjectArray()
 {
@@ -53,7 +54,7 @@ void Snow::ObjectArray::changeName(const std::string &from, const std::string &t
 
 std::shared_ptr<Snow::Object> Snow::ObjectArray::getObject(const std::string &name) const
 {
-	std::lock_guard<std::mutex> lg(this->_mut);
+	std::lock_guard<std::mutex> lg(_mut);
 	auto it = _objects.find(name);
 	if (it != _objects.end())
 		return it->second;
@@ -61,12 +62,24 @@ std::shared_ptr<Snow::Object> Snow::ObjectArray::getObject(const std::string &na
 		return nullptr;
 }
 
-// TODO разобраться, что лучше - снимок или по ссылке
+std::vector<Snow::SpriteObject> Snow::ObjectArray::getSnapshot() const
+{
+	std::lock_guard<std::mutex> lg(_mut);
+	std::vector<Snow::SpriteObject> tArray;
+	for (auto &obj: _objects)
+	{
+		tArray.push_back(obj.second->getSpriteObject());
+	}
+	return tArray;
+}
+
 std::vector<std::shared_ptr<Snow::Object> > Snow::ObjectArray::getArray() const
 {
-	std::lock_guard<std::mutex> lg(this->_mut);
+	std::lock_guard<std::mutex> lg(_mut);
 	std::vector<std::shared_ptr<Snow::Object> > tArray;
-	for (auto obj: _objects)
+	for (auto &obj: _objects)
+	{
 		tArray.push_back(obj.second);
+	}
 	return tArray;
 }

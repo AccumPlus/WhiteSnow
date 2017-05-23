@@ -21,7 +21,7 @@ namespace Snow
 		const ObjectArray &_objectArray;
 
 		// clear - очистить строку, в которую производится вывод
-		void printString(std::string str, const long &row, const long &col, const bool &clear = false);
+		void printString(std::string str, const long &row, const long &col);
 
 	};
 

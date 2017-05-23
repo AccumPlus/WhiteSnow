@@ -32,16 +32,17 @@ void Snow::Printer::work()
 	while (true)
 	{
 		// Получаем вектор объектов, отсортированный по слоям от нижнего к верхнему
-		auto tObjects = _objectArray.getArray();
-		std::sort(tObjects.begin(), tObjects.end(), 
-				[](const std::shared_ptr<Snow::Object> &first, const std::shared_ptr<Snow::Object> &second)
+		auto tSpriteObjects = _objectArray.getSnapshot();
+
+		std::sort(tSpriteObjects.begin(), tSpriteObjects.end(), 
+				[](const Snow::SpriteObject &first, const Snow::SpriteObject &second)
 				{
-					return first->getLayerNumber() < second->getLayerNumber();
+					return first.getLayerNumber() < second.getLayerNumber();
 				});
 
 	//	std::cout << "SpriteSegment" << "\n\r";
 		// Результирующий спрайт-сегмент
-		Snow::SpriteSegment resultSpriteSegment;
+		Snow::SpriteObject resultSpriteObject;
 
 		// Точки камеры
 		Snow::Position camUpLeft = _camera->getPosition();
@@ -56,38 +57,20 @@ void Snow::Printer::work()
 	//
 	//	std::cout << "Complex part" << "\n\r";
 		
-		// TODO обработать спрайт-сегмент для камеры
-		
-
 		// Получаем результирующий спрайт-сегмент в абсолютных позициях
-		for (auto object: tObjects)
+		for (auto &object: tSpriteObjects)
 		{
-			if (object == _camera)
-			{
-				continue;
-			}
-			else
-			{
-		
-	//			object->lockFullMutex();
-				SpriteSegment tSegment = object->getSpriteSegment(camUpLeft, camDownRight);
-	//			std::cout << "SpriteSegment points:" << "\n\r";
-	//			std::cout << "X = " << tSegment.getPosition().getX() << "\n\r";
-	//			std::cout << "Y = " << tSegment.getPosition().getY() << "\n\r";
-	//			std::cout << "W = " << tSegment.getSprite().getWidth() << "\n\r";
-	//			std::cout << "H = " << tSegment.getSprite().getHeight() << "\n\r";
-	//			object->unlockFullMutex();
-				resultSpriteSegment.addAbove(tSegment);
-			}
+			Snow::SpriteObject tSegment = object.getCut(camUpLeft, camDownRight);
+			resultSpriteObject.addAbove(tSegment);
 		}
 
 
 		// Так как все спрайты были предварительно обрезаны под камеру, можно просто выводить на экран результирующий как есть
 		long row = 0;
-		for (auto tStr: resultSpriteSegment.getSprite()._field)
+		for (auto tStr: resultSpriteObject.getSprite()._field)
 		{
 		//	std::cout << "Printing string" << "\n\r";
-			printString(tStr, row++, 0, true);
+			printString(tStr, row++, 0);
 		}
 
 		// TODO вывести 
@@ -107,7 +90,7 @@ void Snow::Printer::work()
 //}
 
 // TODO как следует пересмотреть!
-void Snow::Printer::printString(std::string str, const long &row, const long &col, const bool &clear)
+void Snow::Printer::printString(std::string str, const long &row, const long &col)
 {
 //	move(1, 0);
 //	printw("0000000");
@@ -120,13 +103,13 @@ void Snow::Printer::printString(std::string str, const long &row, const long &co
 //		str = str.substr(0, str.length() - (col + str.length() - _camera->getWidth()));
 
 	// Добавляем слева и справа пробелы, если надо чистить всю строку
-	if (clear)
-	{
-		if (col != 0)
-			str = std::string(col, ' ') + str;
-		if (col + (signed long)str.length() < _camera->getWidth())
-			str += std::string(_camera->getWidth() - (col + str.length()), ' ');
-	}
+//	if (clear)
+//	{
+//		if (col != 0)
+//			str = std::string(col, ' ') + str;
+//		if (col + (signed long)str.length() < _camera->getWidth())
+//			str += std::string(_camera->getWidth() - (col + str.length()), ' ');
+//	}
 
 	move(row, col);
 	printw(str.c_str());

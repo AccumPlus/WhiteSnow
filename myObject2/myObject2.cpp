@@ -2,21 +2,21 @@
 #include <iostream>
 #include <memory>
 
-#include "myObject.h"
+#include "myObject2.h"
 #include "../ObjectArray.h"
 #include "../Position.h"
 #include "../Camera.h"
 
-MyObject::MyObject():
+MyObject2::MyObject2():
 	Object()
 {
 }
 
-MyObject::~MyObject()
+MyObject2::~MyObject2()
 {
 }
 
-void MyObject::work()
+void MyObject2::work()
 {
 	auto camera = std::static_pointer_cast<Snow::Camera>(_parent->getObject("__camera__"));
 
@@ -27,16 +27,16 @@ void MyObject::work()
 		usleep(10000);
 		if (dir)
 		{
-			_position.setX(_position.getX() + 1);
-			if (_position.getX() + _sprite.getWidth() == camera->getPosition().getX() + camera->getWidth())
+			_position.setY(_position.getY() + 1);
+			if (_position.getY() + _sprite.getHeight() == camera->getPosition().getY() + camera->getHeight())
 			{
 				dir = false;
 			}
 		}
 		else
 		{
-			_position.setX(_position.getX() - 1);
-			if (_position.getX() == camera->getPosition().getX())
+			_position.setY(_position.getY() - 1);
+			if (_position.getY() == camera->getPosition().getY())
 			{
 				dir = true;
 			}
