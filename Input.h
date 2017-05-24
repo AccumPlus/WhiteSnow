@@ -2,6 +2,7 @@
 #define SNOW_INPUT_H
 
 #include <map>
+#include <mutex>
 
 namespace Snow
 {
@@ -26,6 +27,8 @@ namespace Snow
 
 		void checkKeys();
 		void holdKeys();
+
+		static std::mutex _mut;
 
 	};
 }

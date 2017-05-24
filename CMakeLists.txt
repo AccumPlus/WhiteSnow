@@ -10,6 +10,7 @@ set (SRC 	main.cpp
 			Camera.cpp
 			Controller.cpp
 			Event.cpp
+			Input.cpp
 			Object.cpp
 			ObjectArray.cpp
 			Position.cpp
@@ -23,6 +24,7 @@ set (HDR
 			Camera.h
 			Controller.h
 			Event.h
+			Input.h
 			Object.h
 			ObjectArray.h
 			Position.h

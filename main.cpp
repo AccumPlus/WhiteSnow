@@ -12,30 +12,31 @@
 #include "Controller.h"
 #include "myObject/myObject.h"
 #include "myObject2/myObject2.h"
+#include "Input.h"
 
 int main()
 {
-	Snow::ObjectArray objectArray;
-
-	auto camera = std::make_shared<Snow::Camera>();
-	camera->setWidth(20);
-	camera->setHeight(40);
-	camera->setPosition(0, 0);
-	camera->setLayerNumber(-1);
-	camera->setName("__camera__");
-	
-	objectArray.addObject(camera);
-
-	{
-		auto obj = std::make_shared<MyObject>();
-		obj->setSprite("../etc/example.sprite");
-		obj->setPosition(5, 0);
-		obj->setLayerNumber(1);
-		obj->setName("FirstObject");
-
-		objectArray.addObject(obj);
-	}
-
+//	Snow::ObjectArray objectArray;
+//
+//	auto camera = std::make_shared<Snow::Camera>();
+//	camera->setWidth(20);
+//	camera->setHeight(40);
+//	camera->setPosition(0, 0);
+//	camera->setLayerNumber(-1);
+//	camera->setName("__camera__");
+//	
+//	objectArray.addObject(camera);
+//
+//	{
+//		auto obj = std::make_shared<MyObject>();
+//		obj->setSprite("../etc/example.sprite");
+//		obj->setPosition(5, 0);
+//		obj->setLayerNumber(1);
+//		obj->setName("FirstObject");
+//
+//		objectArray.addObject(obj);
+//	}
+//
 //	{
 //		auto obj = std::make_shared<MyObject2>();
 //		obj->setSprite("../etc/example2.sprite");
@@ -46,19 +47,38 @@ int main()
 //		objectArray.addObject(obj);
 //	}
 
-	Snow::Printer pr(objectArray);
-	Snow::Controller cr(objectArray);
+//	Snow::Printer pr(objectArray);
+//	Snow::Controller cr(objectArray);
 
 	initscr();
-//	cbreak();
-//	noecho();
-//	keypad(stdscr, TRUE);
-	curs_set(0);
+	cbreak();
+	noecho();
+	keypad(stdscr, TRUE);
+
+
+	Snow::Input input;
+
+	std::thread thr(&Snow::Input::work, input);
+
+	while (true)
+	{
+		move (0, 0);
+		if (Snow::Input::isPressed(Snow::Keys::KeyA))
+			printw("Pressed\n");
+		else
+			printw("Not Pressed\n");
+		refresh();
+	}
+
+	thr.join();
+
+
+//	curs_set(0);
 //
-	std::thread thr(&Snow::Printer::work, pr);
+//	std::thread thr(&Snow::Printer::work, pr);
 ////	pr.work();
 //
-	cr.work();
+//	cr.work();
 //
 //	int a = getch();
 //
