@@ -6,8 +6,8 @@
 namespace Snow
 {
 	enum class Keys {
-		ArrowUp = 27,	ArrowDown = 1,	ArrowLeft = 2,	ArrowRight = 3,
-		KeyW = 4,		KeyS = 5,		KeyA = 6,		KeyD = 7
+		ArrowDown = 258,	ArrowUp = 259,	ArrowLeft = 260,	ArrowRight = 261,
+		KeyW = 119,			KeyS = 115,		KeyA = 97,			KeyD = 100
 	};
 
 	class Input
@@ -18,9 +18,14 @@ namespace Snow
 
 		static bool isPressed(const Keys &key);
 
+		void work();
+
 	private:
 		// Нажатые клавиши
-		std::map<int, unsigned long> _pressedChars;
+		static std::map<int, unsigned long> _pressedChars;
+
+		void checkKeys();
+		void holdKeys();
 
 	};
 }
