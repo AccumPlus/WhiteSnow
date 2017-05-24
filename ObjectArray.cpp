@@ -4,6 +4,7 @@
 #include "ObjectArray.h"
 #include "Object.h"
 #include "SpriteObject.h"
+#include "Event.h"
 
 Snow::ObjectArray::ObjectArray()
 {
@@ -24,14 +25,51 @@ void Snow::ObjectArray::addObject(const std::shared_ptr<Snow::Object> &object)
 		}
 	}
 
+	object->setParent(this);
+
 	_objects.push_back(object);
 
-	object->setParent(this);
+	_eventList.emplace_back(object->getName(), Snow::EventType::StartObject);
+
+	std::unique_lock<std::mutex> ul(_cMut);
+	_eventReady = true;
+	_cVar.notify_all();
 }
 
 void Snow::ObjectArray::removeObject(const std::string &name)
 {
 	std::lock_guard<std::mutex> lg(_mut);
+	auto it = _objects.begin();
+	for (; ; )
+	{
+		if ((*it)->getName() == name)
+		{
+			_eventList.push_back(Snow::Event(name, Snow::EventType::StopObject));
+			break;
+		}
+		++it;
+		if (it == _objects.end())
+			break;
+	}
+
+	std::unique_lock<std::mutex> ul(_cMut);
+	_eventReady = true;
+	_cVar.notify_all();
+}
+
+void Snow::ObjectArray::waitForEvents()
+{
+	std::unique_lock<std::mutex> ul(_cMut);
+	while (!_eventReady)
+	{
+		_cVar.wait(ul);
+	}
+}
+
+void Snow::ObjectArray::removeFromArray(const std::string &name)
+{
+	std::lock_guard<std::mutex> lg(_mut);
+
 	for (auto it = _objects.begin(); it != _objects.end(); ++it)
 	{
 		if ((*it)->getName() == name)
@@ -71,11 +109,10 @@ std::shared_ptr<Snow::Object> Snow::ObjectArray::getObject(const std::string &na
 		{
 			break;
 		}
-		else
-		{
-			return nullptr;
-		}
 	}
+
+	if (it == _objects.end())
+		return nullptr;
 
 	return (*it);
 }
@@ -100,4 +137,17 @@ std::vector<std::shared_ptr<Snow::Object> > Snow::ObjectArray::getArray() const
 		tArray.push_back(obj);
 	}
 	return tArray;
+}
+
+std::list<Snow::Event> Snow::ObjectArray::getEventList()
+{
+	std::lock_guard<std::mutex> lg(_mut);
+
+	auto tList = _eventList;
+	_eventList.clear();
+
+	std::unique_lock<std::mutex> ul(_cMut);
+	_eventReady = false;
+	
+	return tList;
 }

@@ -7,8 +7,9 @@ set(PROJECT Temp)
 set (SRC 	main.cpp
 			myObject/myObject.cpp
 			myObject2/myObject2.cpp
-			Controller.cpp
 			Camera.cpp
+			Controller.cpp
+			Event.cpp
 			Object.cpp
 			ObjectArray.cpp
 			Position.cpp
@@ -16,9 +17,12 @@ set (SRC 	main.cpp
 			Sprite.cpp
 			SpriteObject.cpp)
 
-set (HDR 	Camera.h
+set (HDR 	
 			myObject2/myObject2.h
+			myObject/myObject.h
+			Camera.h
 			Controller.h
+			Event.h
 			Object.h
 			ObjectArray.h
 			Position.h

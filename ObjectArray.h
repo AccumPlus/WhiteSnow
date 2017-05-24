@@ -6,11 +6,13 @@
 #include <vector>
 #include <memory>
 #include <mutex>
+#include <condition_variable>
 
 namespace Snow
 {
 	class Object;
 	class SpriteObject;
+	class Event;
 
 	class ObjectArray
 	{
@@ -18,18 +20,24 @@ namespace Snow
 		ObjectArray();
 		~ObjectArray();
 
-//		void addObject(const std::string &name, const std::shared_ptr<Snow::Object> &object);
 		void addObject(const std::shared_ptr<Snow::Object> &object);
 		void removeObject(const std::string &name);
-//		void changeName(const std::string &from, const std::string &to);
+		void waitForEvents();
+		void removeFromArray(const std::string &name);
 
 		std::shared_ptr<Snow::Object> getObject(const std::string &name) const;
 		std::vector<Snow::SpriteObject> getSnapshot() const;
 		std::vector<std::shared_ptr<Snow::Object> > getArray() const;
+		std::list<Snow::Event> getEventList();
 	private:
-//		std::map<std::string, std::shared_ptr<Snow::Object> > _objects;
 		std::list<std::shared_ptr<Snow::Object> > _objects;
+		std::list<Snow::Event> _eventList;
+
 		mutable std::mutex _mut;
+
+		std::condition_variable _cVar;
+		std::mutex _cMut;
+		bool _eventReady;
 	};
 }
 

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Object.h"
+#include "ObjectArray.h"
 
 Snow::Object::Object():
 	_parent(nullptr)
@@ -32,9 +33,15 @@ void Snow::Object::startJob()
 
 void Snow::Object::endJob()
 {
+	_mut.lock();
 	if (_parent)
 	{
-		
+		_mut.unlock();
+		_parent->removeObject(_name);
+	}
+	else
+	{
+		_mut.unlock();
 	}
 }
 

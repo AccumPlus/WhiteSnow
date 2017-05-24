@@ -1,6 +1,9 @@
 #ifndef SNOW_CONTROLLER_H
 #define SNOW_CONTROLLER_H
 
+#include <map>
+#include <thread>
+
 namespace Snow
 {
 	/*
@@ -20,6 +23,7 @@ namespace Snow
 		void work();
 	private:
 		ObjectArray &_objectArray;
+		std::map<std::string, std::thread> _threads;
 
 	};
 }

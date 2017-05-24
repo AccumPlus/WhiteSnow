@@ -18,8 +18,8 @@ int main()
 	Snow::ObjectArray objectArray;
 
 	auto camera = std::make_shared<Snow::Camera>();
-	camera->setWidth(40);
-	camera->setHeight(20);
+	camera->setWidth(20);
+	camera->setHeight(40);
 	camera->setPosition(0, 0);
 	camera->setLayerNumber(-1);
 	camera->setName("__camera__");
@@ -29,22 +29,22 @@ int main()
 	{
 		auto obj = std::make_shared<MyObject>();
 		obj->setSprite("../etc/example.sprite");
-		obj->setPosition(1, 1);
+		obj->setPosition(5, 0);
 		obj->setLayerNumber(1);
 		obj->setName("FirstObject");
 
 		objectArray.addObject(obj);
 	}
 
-	{
-		auto obj = std::make_shared<MyObject2>();
-		obj->setSprite("../etc/example2.sprite");
-		obj->setPosition(5, 1);
-		obj->setLayerNumber(0);
-		obj->setName("SecondObject");
-
-		objectArray.addObject(obj);
-	}
+//	{
+//		auto obj = std::make_shared<MyObject2>();
+//		obj->setSprite("../etc/example2.sprite");
+//		obj->setPosition(5, 0);
+//		obj->setLayerNumber(0);
+//		obj->setName("SecondObject");
+//
+//		objectArray.addObject(obj);
+//	}
 
 	Snow::Printer pr(objectArray);
 	Snow::Controller cr(objectArray);
@@ -53,7 +53,7 @@ int main()
 //	cbreak();
 //	noecho();
 //	keypad(stdscr, TRUE);
-////	curs_set(0);
+	curs_set(0);
 //
 	std::thread thr(&Snow::Printer::work, pr);
 ////	pr.work();
